@@ -1,33 +1,36 @@
 package Pages;
 
 import org.openqa.selenium.*;
+import utils.WaitUtils;
 
 public class LoginPage {
     WebDriver driver;
     HomePage homePage;
     VideoGamePage videoGamePage;
-    private By emailOrPhoneNumberTextField=By.id("ap_email_login");
-    private By passwordTextField=By.id("ap_password");
-    private By backToHomePageError=By.xpath("/html/body/center/p/b/a");
+    WaitUtils waitUtils;
+    private final By emailOrPhoneNumberTextField=By.id("ap_email_login");
+    private final By passwordTextField=By.id("ap_password");
+    private final By backToHomePageError=By.xpath("/html/body/center/p/b/a");
 
 
     public LoginPage(WebDriver driver) {
         this.driver=driver;
         homePage= new HomePage(driver);
-videoGamePage= new VideoGamePage(driver);
+        videoGamePage= new VideoGamePage(driver);
+        waitUtils = new WaitUtils(driver);
     }
 
     public WebElement emailOrPhoneNumberMethod(){
 
-        return homePage.clickOnElementWhenClickable(emailOrPhoneNumberTextField);
+        return waitUtils.clickOnElementWhenClickable(emailOrPhoneNumberTextField);
     }
     public WebElement passwordMethod(){
 
-        return homePage.clickOnElementWhenClickable(passwordTextField);
+        return waitUtils.clickOnElementWhenClickable(passwordTextField);
     }
     public WebElement backToHomePageButtonErrorMethod(){
 
-        return homePage.clickOnElementWhenClickable(backToHomePageError);
+        return waitUtils.clickOnElementWhenClickable(backToHomePageError);
     }
 
 

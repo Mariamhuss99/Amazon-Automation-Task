@@ -27,6 +27,8 @@ addressPage= new AddressPage(driver);
         homePage.AllVideoGamesButtomMethod().click();
         homePage.ScrollUntilFindElement(videoGamePage.seeMoreVideoGamesButtonMethod());
         videoGamePage.seeMoreVideoGamesButtonMethod().click();
+        videoGamePage.FilterByFreeDeliveryMethod().click();
+       // videoGamePage.ConditionNewFilterMethod().click();
         videoGamePage.sortByDropDownMethod().click();
         videoGamePage.SortByOption(videoGamePage.FromHighToLowSortElementMethod());
  videoGamePage.AddItemsToCart( videoGamePage.getItemsUnderThreshold(15000));

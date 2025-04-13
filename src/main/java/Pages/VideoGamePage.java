@@ -4,6 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import utils.WaitUtils;
 
 import java.security.Key;
 import java.time.Duration;
@@ -13,57 +14,66 @@ import java.util.List;
 public class VideoGamePage {
     static WebDriver driver;
     HomePage homePage;
+    WaitUtils waitUtils;
 
-    private By seeMoreVideoGamesButton=By.cssSelector("span.a-size-medium.a-color-link.a-text-bold");
-    private By sortByDropDown=By.className("a-dropdown-prompt");
-    private By sortByHighToLowOption=By.id("s-result-sort-select_2");
-    private By priceTextField=By.className("a-price-whole");
-    private By goToPage2Button=By.cssSelector("a.s-pagination-item[aria-label='Go to page 2']");
-    private By addToCartButton=By.id("add-to-cart-button");
-    private By successMessage=  By.cssSelector("div.a-box.a-alert-inline.a-alert-inline-success.sw-atc-message");
-    private By cartIcon= By.id("nav-cart-count");
-    private By proceedToCheckOut =By.name("proceedToRetailCheckout");
-
+    private final By seeMoreVideoGamesButton=By.cssSelector("span.a-size-medium.a-color-link.a-text-bold");
+    private final By sortByDropDown=By.className("a-dropdown-prompt");
+    private final By sortByHighToLowOption=By.id("s-result-sort-select_2");
+    private final By priceTextField=By.className("a-price-whole");
+    private final By goToPage2Button=By.cssSelector("a.s-pagination-item[aria-label='Go to page 2']");
+    private final By addToCartButton=By.id("add-to-cart-button");
+    private final By successMessage=  By.cssSelector("div.a-box.a-alert-inline.a-alert-inline-success.sw-atc-message");
+    private final By cartIcon= By.id("nav-cart-count");
+    private final By proceedToCheckOut =By.name("proceedToRetailCheckout");
+    private final By FilterByFreeDelivery=By.xpath("/html/body/div[1]/div[1]/div[1]/div[2]/div/div[3]/span/div/span/div/div[2]/div[2]/ul[1]/span/span/li/span/a/div[1]/label/i");
+private final By ConditionNewFilter=By.xpath("//span[text()='New']/ancestor::a");
     public VideoGamePage(WebDriver driver) {
         this.driver=driver;
         homePage= new HomePage(driver);
+        waitUtils= new WaitUtils(driver);
+    }
+    public WebElement ConditionNewFilterMethod(){
+
+        return waitUtils.clickOnElementWhenClickable(ConditionNewFilter);
     }
     public WebElement cartIconButtonMethod(){
-        return homePage.clickOnElementWhenClickable(cartIcon);
+        return waitUtils.clickOnElementWhenClickable(cartIcon);
     }
+    public WebElement FilterByFreeDeliveryMethod(){
+
+        return waitUtils.clickOnElementWhenClickable(FilterByFreeDelivery);
+    }
+
+
     public WebElement proceedToCheckOutMethod(){
-        return homePage.clickOnElementWhenClickable(proceedToCheckOut);
+        return waitUtils.clickOnElementWhenClickable(proceedToCheckOut);
     }
     public WebElement successMessageMethod(){
 
-        return waitUntilVisible(successMessage);
+        return waitUtils.waitUntilVisible(successMessage);
     }
-    public static WebElement waitUntilVisible( By locator) {
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    }
     public WebElement addToCartButtonMethod(){
-        return homePage.clickOnElementWhenClickable(addToCartButton);
+        return waitUtils.clickOnElementWhenClickable(addToCartButton);
     }
     public WebElement GoToPage2Method(){
-        return homePage.clickOnElementWhenClickable(goToPage2Button);
+        return waitUtils.clickOnElementWhenClickable(goToPage2Button);
     }
 
     public WebElement sortByDropDownMethod()
     {
-        return homePage.clickOnElementWhenClickable(sortByDropDown);
+        return waitUtils.clickOnElementWhenClickable(sortByDropDown);
     }
     public WebElement seeMoreVideoGamesButtonMethod(){
 
-        return homePage.clickOnElementWhenClickable(seeMoreVideoGamesButton);
+        return waitUtils.clickOnElementWhenClickable(seeMoreVideoGamesButton);
     }
 
     public void SortByOption(WebElement dropDown){
       dropDown.click();
     }
     public WebElement FromHighToLowSortElementMethod(){
-        return homePage.clickOnElementWhenClickable(sortByHighToLowOption);
+        return waitUtils.clickOnElementWhenClickable(sortByHighToLowOption);
     }
     public List<WebElement> getItemsUnderThreshold(int threshold) {
         List<WebElement> itemsUnderThreshold = findItemsUnderThresholdOnPage(threshold);
@@ -77,7 +87,7 @@ public class VideoGamePage {
     }
 
     private List<WebElement> findItemsUnderThresholdOnPage(int threshold) {
-        homePage.clickOnElementWhenClickable(priceTextField);
+        waitUtils.clickOnElementWhenClickable(priceTextField);
         List<WebElement> prices = driver.findElements(priceTextField);
         List<WebElement> itemsUnderThreshold = new ArrayList<>();
 
@@ -100,7 +110,6 @@ public class VideoGamePage {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy((priceTextField)));
             System.out.println(elements);
-            //homePage.ScrollUntilFindElement(elements.get(i));
             elements.get(i).click();
             addToCartButtonMethod().click();
             successMessageMethod().isDisplayed();
